@@ -109,6 +109,29 @@ public expect fun String(chars: CharArray): String
 @SinceKotlin("1.2")
 public expect fun String(chars: CharArray, offset: Int, length: Int): String
 
+/**
+ * Concatenates the characters in this array to form string.
+ *
+ * @param startIndex the start offset (inclusive) of this array to be concatenated.
+ * @param endIndex the end offset (exclusive) of this array to be concatenated.
+ *
+ * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than size of this array.
+ * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
+ */
+@SinceKotlin("1.3")
+public expect fun CharArray.concatToString(startIndex: Int = 0, endIndex: Int = this.size): String
+
+/**
+ * Converts this string to an array of characters.
+ *
+ * @param startIndex the start offset (inclusive) of this string to convert from.
+ * @param endIndex the end offset (exclusive) of this string to convert upto.
+ *
+ * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than length of this string.
+ * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
+ */
+@SinceKotlin("1.3")
+public expect fun String.toCharArray(startIndex: Int = 0, endIndex: Int = this.length): CharArray
 
 internal expect fun String.nativeIndexOf(str: String, fromIndex: Int): Int
 internal expect fun String.nativeLastIndexOf(str: String, fromIndex: Int): Int
