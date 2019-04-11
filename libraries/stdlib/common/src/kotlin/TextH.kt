@@ -82,6 +82,9 @@ expect enum class RegexOption {
     MULTILINE
 }
 
+@SinceKotlin("1.3")
+public expect open class CharacterCodingException() : Exception
+
 
 // From char.kt
 
@@ -132,6 +135,43 @@ public expect fun CharArray.concatToString(startIndex: Int = 0, endIndex: Int = 
  */
 @SinceKotlin("1.3")
 public expect fun String.toCharArray(startIndex: Int = 0, endIndex: Int = this.length): CharArray
+
+/**
+ * Decodes the UTF-8 bytes in this array to a string.
+ *
+ * @param startIndex the start offset (inclusive) of this array to decode.
+ * @param endIndex the end offset (exclusive) of this array to decode.
+ * @param throwOnInvalidSequence determines weather to throw on malformed byte sequence or to replace by the replacement char `\uFFFD`.
+ *
+ * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than size of this array.
+ * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
+ * @throws CharacterCodingException if the byte array contains malformed UTF-8 byte sequence and [throwOnInvalidSequence] is true.
+ */
+@SinceKotlin("1.3")
+public expect fun ByteArray.decodeToString(
+    startIndex: Int = 0,
+    endIndex: Int = this.size,
+    throwOnInvalidSequence: Boolean = false
+): String
+
+/**
+ * Encodes this string to an array of UTF-8 bytes.
+ *
+ * @param startIndex the start offset (inclusive) of this string to encode.
+ * @param endIndex the end offset (exclusive) of this string to encode.
+ * @param throwOnInvalidSequence determines weather to throw on malformed char sequence or to replace by the replacement byte `0x3F`.
+ *
+ * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than length of this string.
+ * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
+ * @throws CharacterCodingException if this string contains malformed char sequence and [throwOnInvalidSequence] is true.
+ */
+@SinceKotlin("1.3")
+public expect fun String.encodeToByteArray(
+    startIndex: Int = 0,
+    endIndex: Int = this.length,
+    throwOnInvalidSequence: Boolean = false
+): ByteArray
+
 
 internal expect fun String.nativeIndexOf(str: String, fromIndex: Int): Int
 internal expect fun String.nativeLastIndexOf(str: String, fromIndex: Int): Int

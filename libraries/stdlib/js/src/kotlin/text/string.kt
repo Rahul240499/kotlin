@@ -54,6 +54,28 @@ public actual fun String.toCharArray(startIndex: Int = 0, endIndex: Int = this.l
     return CharArray(endIndex - startIndex) { get(startIndex + it) }
 }
 
+@SinceKotlin("1.3")
+@Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
+public actual fun ByteArray.decodeToString(
+    startIndex: Int = 0,
+    endIndex: Int = this.size,
+    throwOnInvalidSequence: Boolean = false
+): String {
+    AbstractList.checkBoundsIndexes(startIndex, endIndex, this.size)
+    return decodeUtf8(this, startIndex, endIndex, throwOnInvalidSequence)
+}
+
+@SinceKotlin("1.3")
+@Suppress("ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS")
+public actual fun String.encodeToByteArray(
+    startIndex: Int = 0,
+    endIndex: Int = this.length,
+    throwOnInvalidSequence: Boolean = false
+): ByteArray {
+    checkStringBounds(startIndex, endIndex, length)
+    return encodeUtf8(this, startIndex, endIndex, throwOnInvalidSequence)
+}
+
 /**
  * Returns a copy of this string converted to upper case using the rules of the default locale.
  *
