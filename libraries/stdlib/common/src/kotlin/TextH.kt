@@ -82,6 +82,9 @@ expect enum class RegexOption {
     MULTILINE
 }
 
+/**
+ *  The exception thrown when a character encoding or decoding error occurs.
+ */
 @SinceKotlin("1.3")
 public expect open class CharacterCodingException() : Exception
 
@@ -113,10 +116,10 @@ public expect fun String(chars: CharArray): String
 public expect fun String(chars: CharArray, offset: Int, length: Int): String
 
 /**
- * Concatenates the characters in this array to form string.
+ * Returns a string consisting of characters in this array.
  *
- * @param startIndex the start offset (inclusive) of this array to be concatenated.
- * @param endIndex the end offset (exclusive) of this array to be concatenated.
+ * @param startIndex the start offset (inclusive) of the characters the returned string consists of.
+ * @param endIndex the end offset (exclusive) of the characters the returned string consists of.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than size of this array.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
@@ -125,10 +128,10 @@ public expect fun String(chars: CharArray, offset: Int, length: Int): String
 public expect fun CharArray.concatToString(startIndex: Int = 0, endIndex: Int = this.size): String
 
 /**
- * Converts this string to an array of characters.
+ * Returns an array containing characters of this string.
  *
- * @param startIndex the start offset (inclusive) of this string to convert from.
- * @param endIndex the end offset (exclusive) of this string to convert upto.
+ * @param startIndex the start offset (inclusive) of the characters the returned array contains.
+ * @param endIndex the end offset (exclusive) of the characters the returned array contains.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than length of this string.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
@@ -137,7 +140,7 @@ public expect fun CharArray.concatToString(startIndex: Int = 0, endIndex: Int = 
 public expect fun String.toCharArray(startIndex: Int = 0, endIndex: Int = this.length): CharArray
 
 /**
- * Decodes the UTF-8 bytes in this array to a string.
+ * Decodes this array of UTF-8 bytes and returns the resulting string.
  *
  * @param startIndex the start offset (inclusive) of this array to decode.
  * @param endIndex the end offset (exclusive) of this array to decode.
