@@ -146,9 +146,9 @@ private fun codePointFrom4(bytes: ByteArray, byte1: Int, index: Int, endIndex: I
 private const val MAX_BYTES_PER_CHAR = 3
 
 /**
- * The byte a malformed UTF-16 char sequence is replaced by.
+ * The byte sequence a malformed UTF-16 char sequence is replaced by.
  */
-private const val REPLACEMENT_BYTE: Byte = 0x3F
+private val REPLACEMENT_BYTE_SEQUENCE: ByteArray = byteArrayOf(0xEF.toByte(), 0xBF.toByte(), 0xBD.toByte())
 
 /**
  * Encodes the [string] using UTF-8 and returns the resulting [ByteArray].
@@ -156,7 +156,7 @@ private const val REPLACEMENT_BYTE: Byte = 0x3F
  * @param string the string to encode.
  * @param startIndex the start offset (inclusive) of the substring to encode.
  * @param endIndex the end offset (exclusive) of the substring to encode.
- * @param throwOnMalformed weather to throw on malformed char sequence or to replace by the [REPLACEMENT_BYTE].
+ * @param throwOnMalformed whether to throw on malformed char sequence or replace by the [REPLACEMENT_BYTE_SEQUENCE].
  *
  * @throws CharacterCodingException if the char sequence is malformed and [throwOnMalformed] is true.
  */
@@ -184,7 +184,9 @@ internal fun encodeUtf8(string: String, startIndex: Int, endIndex: Int, throwOnM
             else -> { // Surrogate char value
                 val codePoint = codePointFromSurrogate(string, code, charIndex, endIndex, throwOnMalformed)
                 if (codePoint <= 0) {
-                    bytes[byteIndex++] = REPLACEMENT_BYTE
+                    bytes[byteIndex++] = REPLACEMENT_BYTE_SEQUENCE[0]
+                    bytes[byteIndex++] = REPLACEMENT_BYTE_SEQUENCE[1]
+                    bytes[byteIndex++] = REPLACEMENT_BYTE_SEQUENCE[2]
                 } else {
                     bytes[byteIndex++] = ((codePoint shr 18) or 0xF0).toByte()
                     bytes[byteIndex++] = (((codePoint shr 12) and 0x3F) or 0x80).toByte()
@@ -210,7 +212,7 @@ private const val REPLACEMENT_CHAR = '\uFFFD'
  * @param bytes the byte array to decode.
  * @param startIndex the start offset (inclusive) of the array to be decoded.
  * @param endIndex the end offset (exclusive) of the array to be encoded.
- * @param throwOnMalformed weather to throw on malformed byte sequence or to replace by the [REPLACEMENT_CHAR].
+ * @param throwOnMalformed whether to throw on malformed byte sequence or replace by the [REPLACEMENT_CHAR].
  *
  * @throws CharacterCodingException if the array is malformed UTF-8 byte sequence and [throwOnMalformed] is true.
  */

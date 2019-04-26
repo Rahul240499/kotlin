@@ -144,7 +144,7 @@ public expect fun String.toCharArray(startIndex: Int = 0, endIndex: Int = this.l
  *
  * @param startIndex the start offset (inclusive) of this array to decode.
  * @param endIndex the end offset (exclusive) of this array to decode.
- * @param throwOnInvalidSequence determines weather to throw on malformed byte sequence or to replace by the replacement char `\uFFFD`.
+ * @param throwOnInvalidSequence determines whether to throw on malformed byte sequence or replace by the replacement char `\uFFFD`.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than size of this array.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
@@ -162,7 +162,7 @@ public expect fun ByteArray.decodeToString(
  *
  * @param startIndex the start offset (inclusive) of this string to encode.
  * @param endIndex the end offset (exclusive) of this string to encode.
- * @param throwOnInvalidSequence determines weather to throw on malformed char sequence or to replace by the replacement byte `0x3F`.
+ * @param throwOnInvalidSequence determines whether to throw on malformed char sequence or replace.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than length of this string.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].

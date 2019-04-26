@@ -15,3 +15,8 @@ internal expect inline fun executeIfNotOnJvm6And7(f: () -> Unit)
 // JS replaces each byte of the sequence by the replacement char, whereas JVM replaces the whole sequence with a single replacement char.
 // See corresponding actual to find out the replacement.
 internal expect val surrogateCodePointDecoding: String
+
+// The byte sequence used to replace a surrogate char.
+// JVM default replacement sequence consist of single 0x3F byte.
+// JS and Native replacement byte sequence is [0xEF, 0xBF, 0xBD].
+internal expect val surrogateCharEncoding: ByteArray

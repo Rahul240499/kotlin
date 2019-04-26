@@ -7,6 +7,7 @@ package text
 
 import test.assertArrayContentEquals
 import test.executeIfNotOnJvm6And7
+import test.surrogateCharEncoding
 import test.surrogateCodePointDecoding
 import kotlin.test.*
 
@@ -57,9 +58,9 @@ class StringEncodingTest {
         testEncoding(true, bytes(0xED, 0x9F, 0xBF), "\uD7FF")
 
         // surrogate chars
-        testEncoding(false, bytes(0x3F), "\uD800")
-        testEncoding(false, bytes(0x3F), "\uDB6A")
-        testEncoding(false, bytes(0x3F), "\uDFFF")
+        testEncoding(false, surrogateCharEncoding, "\uD800")
+        testEncoding(false, surrogateCharEncoding, "\uDB6A")
+        testEncoding(false, surrogateCharEncoding, "\uDFFF")
 
         // 3-byte chars
         testEncoding(true, bytes(0xEE, 0x80, 0x80), "\uE000")
@@ -72,16 +73,16 @@ class StringEncodingTest {
         testEncoding(true, bytes(0xF4, 0x8F, 0xBF, 0xBF), "\uDBFF\uDFFF")
 
         // reversed surrogate pairs
-        testEncoding(false, bytes(0x3F, 0x3F), "\uDC00\uD800")
-        testEncoding(false, bytes(0x3F, 0x3F), "\uDDFC\uDA49")
-        testEncoding(false, bytes(0x3F, 0x3F), "\uDFFF\uDBFF")
+        testEncoding(false, surrogateCharEncoding + surrogateCharEncoding, "\uDC00\uD800")
+        testEncoding(false, surrogateCharEncoding + surrogateCharEncoding, "\uDDFC\uDA49")
+        testEncoding(false, surrogateCharEncoding + surrogateCharEncoding, "\uDFFF\uDBFF")
 
         testEncoding(
             false,
             bytes(
                 0, /**/ 0x2D, /**/ 0x7F, /**/ 0xC2, 0x80, /**/ 0xC2, 0xBF, /**/ 0xDF, 0xBF, /**/ 0xE0, 0xA0, 0x80, /**/
-                0xE6, 0x96, 0xA4, /**/ 0xED, 0x9F, 0xBF, /**/ 0x7A, /**/ 0x3F, /**/ 0x3F, /**/ 0x7A, /**/ 0x3F, /**/ 0x7A, /**/ 0x3F
-            ),
+                0xE6, 0x96, 0xA4, /**/ 0xED, 0x9F, 0xBF, /**/ 0x7A
+            ) /**/ + surrogateCharEncoding /**/ + surrogateCharEncoding /**/ + 0x7A /**/ + surrogateCharEncoding /**/ + 0x7A /**/ + surrogateCharEncoding,
             "\u0000-\u007F\u0080¿\u07FF\u0800斤\uD7FFz\uDFFF\uD800z\uDB6Az\uDB6A"
         )
 
@@ -121,17 +122,17 @@ class StringEncodingTest {
         testEncoding(true, bytes(0xC2, 0xBF), "¿", 0, 1)
         testEncoding(true, bytes(0xE6, 0x96, 0xA4), "斤", 0, 1)
 
-        testEncoding(false, bytes(0x3F), "\uDB6A", 0, 1)
+        testEncoding(false, surrogateCharEncoding, "\uDB6A", 0, 1)
 
         testEncoding(true, bytes(0xEF, 0x98, 0xBC), "\uF63C", 0, 1)
 
         testEncoding(true, bytes(0xF2, 0xA2, 0x97, 0xBC), "\uDA49\uDDFC", 0, 2)
-        testEncoding(false, bytes(0x3F), "\uDA49\uDDFC", 0, 1)
-        testEncoding(false, bytes(0x3F), "\uDA49\uDDFC", 1, 2)
+        testEncoding(false, surrogateCharEncoding, "\uDA49\uDDFC", 0, 1)
+        testEncoding(false, surrogateCharEncoding, "\uDA49\uDDFC", 1, 2)
 
         testEncoding(
             false,
-            bytes(0xE6, 0x96, 0xA4, /**/ 0xED, 0x9F, 0xBF, /**/ 0x7A, /**/ 0x3F, /**/ 0x3F),
+            bytes(0xE6, 0x96, 0xA4, /**/ 0xED, 0x9F, 0xBF, /**/ 0x7A) /**/ + surrogateCharEncoding /**/ + surrogateCharEncoding,
             "\u0000-\u007F\u0080¿\u07FF\u0800斤\uD7FFz\uDFFF\uD800z\uDB6Az\uDB6A",
             startIndex = 7,
             endIndex = 12
@@ -139,7 +140,7 @@ class StringEncodingTest {
 
         testEncoding(
             false,
-            bytes(0xC2, 0xBF, /**/ 0xEF, 0xBF, 0xBF, /**/ 0xF0, 0x90, 0x80, 0x80, /**/ 0xF2, 0xA2, 0x97, 0xBC, /**/ 0x3F),
+            bytes(0xC2, 0xBF, /**/ 0xEF, 0xBF, 0xBF, /**/ 0xF0, 0x90, 0x80, 0x80, /**/ 0xF2, 0xA2, 0x97, 0xBC) /**/ + surrogateCharEncoding,
             "\uE000\uF63C¿\uFFFF\uD800\uDC00\uDA49\uDDFC\uDBFF\uDFFF",
             startIndex = 2,
             endIndex = 9

@@ -27,3 +27,5 @@ internal actual inline fun executeIfNotOnJvm6And7(f: () -> Unit) {
 }
 
 internal actual val surrogateCodePointDecoding: String = "�"
+
+internal actual val surrogateCharEncoding: ByteArray = byteArrayOf(0x3F)
