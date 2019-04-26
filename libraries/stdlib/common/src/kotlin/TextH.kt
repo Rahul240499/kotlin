@@ -116,10 +116,10 @@ public expect fun String(chars: CharArray): String
 public expect fun String(chars: CharArray, offset: Int, length: Int): String
 
 /**
- * Returns a string consisting of characters in this array.
+ * Concatenates characters in this [CharArray] or its subrange into a String.
  *
- * @param startIndex the start offset (inclusive) of the characters the returned string consists of.
- * @param endIndex the end offset (exclusive) of the characters the returned string consists of.
+ * @param startIndex the beginning (inclusive) of the subrange of characters, 0 by default.
+ * @param endIndex the end (exclusive) of the subrange of characters, size of this array by default.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than size of this array.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
@@ -128,10 +128,10 @@ public expect fun String(chars: CharArray, offset: Int, length: Int): String
 public expect fun CharArray.concatToString(startIndex: Int = 0, endIndex: Int = this.size): String
 
 /**
- * Returns an array containing characters of this string.
+ * Returns a [CharArray] containing characters of this string or its substring.
  *
- * @param startIndex the start offset (inclusive) of the characters the returned array contains.
- * @param endIndex the end offset (exclusive) of the characters the returned array contains.
+ * @param startIndex the beginning (inclusive) of the substring, 0 by default.
+ * @param endIndex the end (exclusive) of the substring, length of this string by default.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than length of this string.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
@@ -140,11 +140,11 @@ public expect fun CharArray.concatToString(startIndex: Int = 0, endIndex: Int = 
 public expect fun String.toCharArray(startIndex: Int = 0, endIndex: Int = this.length): CharArray
 
 /**
- * Decodes this array of UTF-8 bytes and returns the resulting string.
+ * Decodes a string from the bytes in UTF-8 encoding in this array or its subrange.
  *
- * @param startIndex the start offset (inclusive) of this array to decode.
- * @param endIndex the end offset (exclusive) of this array to decode.
- * @param throwOnInvalidSequence determines whether to throw on malformed byte sequence or replace by the replacement char `\uFFFD`.
+ * @param startIndex the beginning (inclusive) of the subrange to decode, 0 by default.
+ * @param endIndex the end (exclusive) of the subrange to decode, size of this array by default.
+ * @param throwOnInvalidSequence specifies whether to throw an exception on malformed byte sequence or replace it by the replacement char `\uFFFD`.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than size of this array.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
@@ -158,11 +158,11 @@ public expect fun ByteArray.decodeToString(
 ): String
 
 /**
- * Encodes this string to an array of UTF-8 bytes.
+ * Encodes this string or its substring to an array of bytes in UTF-8 encoding.
  *
- * @param startIndex the start offset (inclusive) of this string to encode.
- * @param endIndex the end offset (exclusive) of this string to encode.
- * @param throwOnInvalidSequence determines whether to throw on malformed char sequence or replace.
+ * @param startIndex the beginning (inclusive) of the substring to encode, 0 by default.
+ * @param endIndex the end (exclusive) of the substring to encode, length of this string by default.
+ * @param throwOnInvalidSequence specifies whether to throw an exception on malformed char sequence or replace.
  *
  * @throws IndexOutOfBoundsException if [startIndex] is less than zero or [endIndex] is greater than length of this string.
  * @throws IllegalArgumentException if [startIndex] is less greater than [endIndex].
