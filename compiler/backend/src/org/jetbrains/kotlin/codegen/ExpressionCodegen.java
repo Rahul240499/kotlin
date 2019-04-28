@@ -3827,7 +3827,7 @@ public class ExpressionCodegen extends KtVisitor<StackValue, StackValue> impleme
             rightValue = gen(right);
         }
         else if (!properIeee754Comparisons &&
-                 callable instanceof IntrinsicCallable && ((isPrimitive(leftType) && isPrimitive(rightType)) || isSame754ArithmeticTypes)) {
+                 callable instanceof GeneralCompareToIntrinsicCallable && ((isPrimitive(leftType) && isPrimitive(rightType)) || isSame754ArithmeticTypes)) {
             type = isSame754ArithmeticTypes ? left754Type.type : comparisonOperandType(leftType, rightType);
             leftValue = gen(left);
             rightValue = gen(right);

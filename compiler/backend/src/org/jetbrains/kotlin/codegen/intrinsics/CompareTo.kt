@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.codegen.intrinsics
 
+import org.jetbrains.kotlin.codegen.AsmUtil
 import org.jetbrains.kotlin.codegen.AsmUtil.comparisonOperandType
 import org.jetbrains.kotlin.codegen.Callable
 import org.jetbrains.kotlin.codegen.CallableMethod
@@ -35,11 +36,21 @@ class CompareTo : IntrinsicMethod() {
 
     override fun toCallable(method: CallableMethod): Callable {
         val parameterType = comparisonOperandType(
-                method.dispatchReceiverType ?: method.extensionReceiverType,
-                method.parameterTypes.single()
+            method.dispatchReceiverType ?: method.extensionReceiverType,
+            method.parameterTypes.single()
         )
-        return createBinaryIntrinsicCallable(method.returnType, parameterType, parameterType, null) {
+        assert(AsmUtil.isPrimitive(method.returnType)) { "Return type of BinaryOp intrinsic should be of primitive type: ${method.returnType}" }
+
+        return GeneralCompareToIntrinsicCallable(method.returnType, parameterType, parameterType, null) {
             genInvoke(parameterType, it)
         }
     }
 }
+
+class GeneralCompareToIntrinsicCallable(
+    returnType: Type,
+    valueParameterType: Type,
+    thisType: Type? = null,
+    receiverType: Type? = null,
+    lambda: IntrinsicCallable.(v: InstructionAdapter) -> Unit
+) : IntrinsicCallable(returnType, listOf(valueParameterType), thisType, receiverType, lambda)
